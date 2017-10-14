@@ -3,6 +3,7 @@ import { PRIVACY_PROTECTED } from 'tslint/lib/rules/completedDocsRule';
 import { NamedLazyChunksWebpackPlugin } from '@angular/cli/plugins/webpack';
 import { identifierModuleUrl } from '@angular/compiler';
 import { Component } from '@angular/core';
+import { Product, condition } from './product';
 
 @Component({
   selector: 'app-root',
@@ -14,24 +15,17 @@ import { Component } from '@angular/core';
               <li *ngFor="let product of products"
               [class.selected]="product===selectedProduct"
               (click)="onSelect(product)">
-
                 <span class="badge">{{product.id}}</span>{{product.name}}
                 {{product.description}} {{product.price}} {{product.condition}}
               </li>
               </ul>
-              <div *ngIf="selectedProduct">
-              <h2>{{selectedProduct.name}} details!</h2>
-              <div><label>id:</label>{{selectedProduct.id}}</div>
-              <div>
-              <label>name:</label>
-              <input [(ngModel)]="selectedProduct.name" placeholder="name">
-              </div>
-              <div><label>description:</label>{{selectedProduct.description}}</div>
-              <div><label>price:</label>{{selectedProduct.price}}</div>
-              <div><label>condition:</label>{{selectedProduct.condition}}</div>
-               </div>
+              <product-detail [product]="selectedProduct"></product-detail>
+
               `
-,
+              /* <product-detail [product]="selectedProduct"=(deleteRequest)="delete($event)"></product-detail> */
+
+              ,
+
 styles: [`
 
 .selected {
@@ -88,41 +82,24 @@ export class AppComponent {
   products = PRODUCTS;
   selectedProduct: Product;
 
+
 onSelect(product: Product): void {
   this.selectedProduct = product;
 
 }
- /*  product: Product = {
-    id: 1,
-    name : 'Laptop',
-    description: 'Asus-1200',
-    price: 1200,
-    condition : condition.Discontinued
-   }; */
-  }
-export class Product {
-id: number;
-name: String;
-description: String;
-price: number;
-condition: condition;
+
+/* delete(product: Product) {
+this.products.pop();
 
 
-
-
-}
-
-/* enum Condition {
-
-  new, used, dicontinued
 } */
-const condition = {
-  New: 'new' as 'new',
-  Used: 'used' as 'used',
-  Discontinued: 'discontinued' as 'discontinued',
- };
-type condition = (typeof condition)[keyof typeof condition];
-export { condition };
+  }
+
+
+
+
+
+
 
 const PRODUCTS: Product[] = [
   {
