@@ -1,0 +1,17 @@
+ <div *ngIf="product">
+  <h2>{{product.name}} details!</h2>
+  <div><label>id:</label>{{product.id}}</div>
+  <div>
+  <label>name:</label>
+  <input [(ngModel)]="product.name" placeholder="name">
+  </div>
+  <div><label>description:</label>{{product.description}}</div>
+  <div><label>price:</label>{{product.price}}</div>
+  <div><label>condition:</label>{{product.condition}}</div>
+
+  <button (click)="ondeleteProduct()">Delete</button>
+  <button (click)="goBack()">Back</button>
+   </div>
+   <!-- <product-detail (deleteRequest)="deleteProduct($event)"></product-detail> -->
+   <!-- <product-detail (deleteRequest)="deleteProduct($event)" [product]="selectedProduct"></product-detail>`
+ -->

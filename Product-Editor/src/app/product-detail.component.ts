@@ -1,39 +1,49 @@
 import { Product } from './product';
-import { Component, Input, Output, EventEmitter } from '@angular/core';
-
-
+import { Component, /* Input, */ Output, EventEmitter, OnInit, Input } from '@angular/core';
+import { ActivatedRoute, ParamMap } from '@angular/router';
+import { Location } from '@angular/common';
+import { ProductService } from './product.service';
+import 'rxjs/add/operator/switchMap';
 @Component({
 
 
   // tslint:disable-next-line:component-selector
   selector: 'product-detail',
+  templateUrl: './product-detail.component.html',
+  styleUrls: ['./product-detail.component.css']
 
-  template: `<div *ngIf="product">
-  <h2>{{product.name}} details!</h2>
-  <div><label>id:</label>{{product.id}}</div>
-  <div>
-  <label>name:</label>
-  <input [(ngModel)]="product.name" placeholder="name">
-  </div>
-  <div><label>description:</label>{{product.description}}</div>
-  <div><label>price:</label>{{product.price}}</div>
-  <div><label>condition:</label>{{product.condition}}</div>
 
-  <button (click)="ondeleteProduct">Delete</button>
-   </div>`
 })
 
-export class ProductDetailComponent {
+export class ProductDetailComponent implements OnInit {
 
-@Input() product: Product;
+
+  constructor(
+    private productService: ProductService,
+    private route: ActivatedRoute,
+    private location: Location
+) {}
+
+
+@Input()  product: Product;
 
 @Output() deleteRequest = new EventEmitter<Product>();
 
-/* ondeleteProduct() {
+ ondeleteProduct() {
 
   this.deleteRequest.emit(this.product);
 
-} */
+}
+ngOnInit(): void {
+  this.route.paramMap.switchMap((params: ParamMap) =>
+  this.productService.getProduct(+params.get('id'))).subscribe(product => this.product = product);
+}
 
+goBack(): void {
+
+  this.location.back();
+
+
+}
 
 }
